@@ -14,12 +14,17 @@ public class CameraFOVHandler : MonoBehaviour
     public float MaxFOV;
     public bool debug;
 
-    GameObject ob1;
+
     float maxDistance;
-    Vector3 cameraTragetPos;
+  
     float cameraTragetFOV;
     Camera cam;
-    Vector3 LookAtPos;
+    Vector3 originalCenter;
+    Vector3 OriginalPosition;
+
+    Vector3 newCenter;
+    Vector3 newPosition;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -28,7 +33,8 @@ public class CameraFOVHandler : MonoBehaviour
 
     private void Start()
     {
-        LookAtPos = FindCenterPoint(trackedPlayers.list.ToArray());
+        originalCenter = FindCenterPoint(trackedPlayers.list.ToArray());
+        OriginalPosition = transform.position;
     }
 
     // Update is called once per frame
@@ -37,20 +43,28 @@ public class CameraFOVHandler : MonoBehaviour
 
         if (trackedPlayers.list.Count > 0)
         {
-            cameraTragetPos = FindCenterPoint(trackedPlayers.list.ToArray());
-            LookAtPos = Vector3.Lerp(LookAtPos, cameraTragetPos, Time.deltaTime * moveSpeedFactor);
-            transform.LookAt(LookAtPos);
+            newCenter = FindCenterPoint(trackedPlayers.list.ToArray());
+            newPosition = OriginalPosition + (newCenter - originalCenter);
+            transform.position = Vector3.Lerp(transform.position, newPosition, Time.deltaTime * moveSpeedFactor);
+
+
+           // transform.position += (newCenter - originalCenter);
             if (debug)
             {
-                Debug.DrawLine(transform.position, LookAtPos, Color.yellow);
-                Debug.DrawLine(transform.position, cameraTragetPos, Color.green);
+                Debug.DrawLine(newCenter, originalCenter, Color.yellow);
+                Debug.DrawLine(OriginalPosition, newPosition, Color.yellow);
+                Debug.DrawLine(newCenter, newPosition, Color.green);
+                Debug.DrawLine(originalCenter, OriginalPosition, Color.gray);
+
                 for (int i = 0; i < trackedPlayers.list.Count; i++)
                 {
-                    Debug.DrawLine(trackedPlayers.list[i].transform.position, cameraTragetPos, Color.cyan);
+                    Debug.DrawLine(trackedPlayers.list[i].transform.position, newCenter, Color.cyan);
+                  //  Debug.DrawLine(trackedPlayers.list[i].transform.position, originalCenter, Color.gray);
                 }
             }
+         //   originalCenter = newCenter;
 
-            maxDistance = GetMaxDistance(trackedPlayers.list.ToArray(), cameraTragetPos, ref ob1);
+            maxDistance = GetMaxDistance(trackedPlayers.list.ToArray(), newCenter);
             cameraTragetFOV = (maxDistance * adjustFOVFactor);
             if (cameraTragetFOV < minFOV) cameraTragetFOV = minFOV;
             else if (cameraTragetFOV > MaxFOV) cameraTragetFOV = MaxFOV;
@@ -65,16 +79,10 @@ public class CameraFOVHandler : MonoBehaviour
 
         }
 
-
-
-
-
-
-
     }
 
 
-    float GetMaxDistance(GameObject[] objects, Vector3 centerPoint, ref GameObject fartherObj)
+    float GetMaxDistance(GameObject[] objects, Vector3 centerPoint)
     {
         float maxDistance = -1f;
         float tempDestance = 0;
@@ -86,7 +94,6 @@ public class CameraFOVHandler : MonoBehaviour
                 if (tempDestance > maxDistance)
                 {
                     maxDistance = tempDestance;
-                    fartherObj = objects[i];
                 }
             }
         }
