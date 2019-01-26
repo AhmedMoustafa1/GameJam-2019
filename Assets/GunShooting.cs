@@ -7,13 +7,9 @@ public class GunShooting : MonoBehaviour
 {
     public GameObject BulletSpawner;
     public float damageValue=20;
-   // public ParticleSystem muzzleFlash;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
+    private float range = 100;
+    public ParticleSystem muzzleFlash;
+   
     // Update is called once per frame
     void FixedUpdate()
     {
@@ -25,13 +21,13 @@ public class GunShooting : MonoBehaviour
 
     private void Shot()
     {
-       // muzzleFlash.Play();
+        muzzleFlash.Play();
         RaycastHit hit;
-        if (Physics.Raycast(BulletSpawner.transform.position,BulletSpawner.transform.forward,out hit))
+        if (Physics.Raycast(BulletSpawner.transform.position,BulletSpawner.transform.forward,out hit,range))
         {
 
             HoldEnemyHealth health = hit.transform.GetComponent<HoldEnemyHealth>();
-         
+            Debug.Log(hit.transform.gameObject.name);
             if (health !=null)
             {
                 Debug.Log("wee");
