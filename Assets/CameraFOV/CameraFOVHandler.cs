@@ -16,7 +16,7 @@ public class CameraFOVHandler : MonoBehaviour
 
 
     float maxDistance;
-  
+
     float cameraTragetFOV;
     Camera cam;
     Vector3 originalCenter;
@@ -48,7 +48,7 @@ public class CameraFOVHandler : MonoBehaviour
             transform.position = Vector3.Lerp(transform.position, newPosition, Time.deltaTime * moveSpeedFactor);
 
 
-           // transform.position += (newCenter - originalCenter);
+            // transform.position += (newCenter - originalCenter);
             if (debug)
             {
                 Debug.DrawLine(newCenter, originalCenter, Color.yellow);
@@ -59,12 +59,12 @@ public class CameraFOVHandler : MonoBehaviour
                 for (int i = 0; i < trackedPlayers.list.Count; i++)
                 {
                     Debug.DrawLine(trackedPlayers.list[i].transform.position, newCenter, Color.cyan);
-                  //  Debug.DrawLine(trackedPlayers.list[i].transform.position, originalCenter, Color.gray);
+                    //  Debug.DrawLine(trackedPlayers.list[i].transform.position, originalCenter, Color.gray);
                 }
             }
-         //   originalCenter = newCenter;
+            //   originalCenter = newCenter;
 
-            maxDistance = GetMaxDistance(trackedPlayers.list.ToArray(), newCenter);
+            maxDistance = GetMaxDistance(trackedPlayers.list.ToArray());
             cameraTragetFOV = (maxDistance * adjustFOVFactor);
             if (cameraTragetFOV < minFOV) cameraTragetFOV = minFOV;
             else if (cameraTragetFOV > MaxFOV) cameraTragetFOV = MaxFOV;
@@ -99,6 +99,42 @@ public class CameraFOVHandler : MonoBehaviour
         }
         return maxDistance;
     }
+
+
+    GameObject debugObj1;
+    GameObject debugObj2;
+    float GetMaxDistance(GameObject[] objects)
+    {
+        float maxDistance = -1f;
+        float tempDestance = 0;
+        if (objects.Length > 1)
+        {
+            for (int x = 0; x < objects.Length - 1; x++)
+            {
+                for (int y = x + 1; y < objects.Length; y++)
+                {
+                    if (maxDistance < (tempDestance = Vector3.Distance(objects[x].transform.position, objects[y].transform.position)))
+                    {
+                        maxDistance = tempDestance;
+                        if (debug)
+                        {
+                            debugObj1 = objects[x];
+                            debugObj2 = objects[y];
+
+                        }
+                    }
+                }
+            }
+        }
+        if (debug)
+        {
+            Debug.DrawLine(debugObj1.transform.position, debugObj2.transform.position, Color.red);
+            Debug.DrawLine(transform.position, Vector3.Lerp(debugObj1.transform.position, debugObj2.transform.position, .5f), Color.red);
+        }
+        return (maxDistance);
+
+    }
+
 
     Vector3 FindCenterPoint(GameObject[] gos)
     {
