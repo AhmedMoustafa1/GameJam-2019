@@ -15,9 +15,9 @@ public class GunShooting : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (Input.GetButtonDown("JoystickF" +
-           charcter.characterNum ))
+        if (Input.GetButtonDown("JoystickF" + charcter.characterNum))
         {
+
             Shot();
         }
         Debug.DrawRay(BulletSpawner.transform.position, range* BulletSpawner.transform.forward, Color.red);
