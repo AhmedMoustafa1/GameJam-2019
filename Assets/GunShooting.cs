@@ -10,11 +10,13 @@ public class GunShooting : MonoBehaviour
     private float range = 100;
     public ParticleSystem muzzleFlash;
     public GameObject muzzleFlare;
+    public CharacterControllerPoly charcter;
    
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("JoystickF" +
+           charcter.characterNum ))
         {
             Shot();
         }
