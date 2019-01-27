@@ -28,7 +28,7 @@ public class GhostSpawner : MonoBehaviour
     private IEnumerator SpawnGhost()
     {
         yield return new WaitForSeconds(currentWaitTime);
-        GameObject ghostTemp = Instantiate(ghostPrefab, transform.position, Quaternion.identity);
+        GameObject ghostTemp = Instantiate(ghostPrefab, transform.position, Quaternion.EulerAngles(0,0,90));
         ghostTemp.GetComponent<GhostRoomNum>().ghostRoomNum = roomNum;
         ghostTemp.GetComponent<GhostMovement>().roomWayPoints = roomWayPoints.waypoints;
         ChooseWaitinTime();
