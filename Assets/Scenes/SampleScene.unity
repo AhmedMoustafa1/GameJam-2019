@@ -733,6 +733,7 @@ MonoBehaviour:
   BulletSpawner: {fileID: 1847255250}
   damageValue: 20
   muzzleFlash: {fileID: 1188051673}
+  muzzleFlare: {fileID: 100006, guid: 0438351a6e6422d43a09930e9be00ee9, type: 3}
 --- !u!1 &177181118
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,6 +9,7 @@ public class GunShooting : MonoBehaviour
     public float damageValue=20;
     private float range = 100;
     public ParticleSystem muzzleFlash;
+    public GameObject muzzleFlare;
    
     // Update is called once per frame
     void FixedUpdate()
@@ -23,6 +24,7 @@ public class GunShooting : MonoBehaviour
     {
         muzzleFlash.Play();
         RaycastHit hit;
+        Debug.DrawRay(BulletSpawner.transform.position, BulletSpawner.transform.forward,Color.red);
         if (Physics.Raycast(BulletSpawner.transform.position,BulletSpawner.transform.forward,out hit,range))
         {
 
@@ -34,6 +36,7 @@ public class GunShooting : MonoBehaviour
                 health.TakeDamage(damageValue);
             }
         }
-     
+
+        Instantiate(muzzleFlare,hit.point,Quaternion.LookRotation(hit.normal));
     }
 }
