@@ -7,7 +7,7 @@ public class CharacterControllerPoly : MonoBehaviour
     public float rotatingTime = 2;
     bool movingH;
     bool movingV;
-    public int character;
+    public int characterNum;
 
 
     // Start is called before the first frame update
@@ -19,14 +19,14 @@ public class CharacterControllerPoly : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetAxis("JoystickH"+character) > 0&&!movingV)
+        if (Input.GetAxis("JoystickH"+characterNum) > 0&&!movingV)
         {
             this.transform.forward = Vector3.Lerp(this.transform.forward,Vector3.forward, rotatingTime);
             movingH = true;
             rb.AddForce(Vector3.right * movingForce);
         }
 
-        if (Input.GetAxis("JoystickH" + character) < 0&&!movingV)
+        if (Input.GetAxis("JoystickH" + characterNum) < 0&&!movingV)
         {
             this.transform.forward = Vector3.Lerp(this.transform.forward, -Vector3.forward, rotatingTime);
 
@@ -35,7 +35,7 @@ public class CharacterControllerPoly : MonoBehaviour
         }
       
 
-        if (Input.GetAxis("JoystickV" + character) < 0 && !movingH)
+        if (Input.GetAxis("JoystickV" + characterNum) < 0 && !movingH)
         {
             this.transform.right = Vector3.Lerp(this.transform.right, Vector3.forward, rotatingTime);
 
@@ -44,7 +44,7 @@ public class CharacterControllerPoly : MonoBehaviour
             movingV = true;
         }
 
-        if (Input.GetAxis("JoystickV" + character) > 0 && !movingH )
+        if (Input.GetAxis("JoystickV" + characterNum) > 0 && !movingH )
         {
             this.transform.right = Vector3.Lerp(this.transform.right, -Vector3.forward, rotatingTime);
 
@@ -53,11 +53,11 @@ public class CharacterControllerPoly : MonoBehaviour
         }
 
 
-        if (Input.GetAxis("JoystickV" + character) == 0)
+        if (Input.GetAxis("JoystickV" + characterNum) == 0)
         {
             movingV = false;
         }
-        if (Input.GetAxis("JoystickH" + character) == 0)
+        if (Input.GetAxis("JoystickH" + characterNum) == 0)
         {
             movingH = false;
         }
