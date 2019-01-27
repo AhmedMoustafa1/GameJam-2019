@@ -18,13 +18,14 @@ public class GunShooting : MonoBehaviour
         {
             Shot();
         }
+        Debug.DrawRay(BulletSpawner.transform.position, range* BulletSpawner.transform.forward, Color.red);
+
     }
 
     private void Shot()
     {
         muzzleFlash.Play();
         RaycastHit hit;
-        Debug.DrawRay(BulletSpawner.transform.position, BulletSpawner.transform.forward,Color.red);
         if (Physics.Raycast(BulletSpawner.transform.position,BulletSpawner.transform.forward,out hit,range))
         {
 
@@ -37,6 +38,7 @@ public class GunShooting : MonoBehaviour
             }
         }
 
-        Instantiate(muzzleFlare,hit.point,Quaternion.LookRotation(hit.normal));
+       GameObject flare= Instantiate(muzzleFlare,hit.point,Quaternion.LookRotation(hit.normal));
+        Destroy(flare,3);
     }
 }
